@@ -1,4 +1,4 @@
-const { SlashCommandBuilder } = require('discord.js');
+const { SlashCommandBuilder, EmbedBuilder } = require('discord.js');
 const { Configuration, OpenAIApi } = require('openai');
 const { openAIKey, max_tokens } = require('../config.json');
 
@@ -31,7 +31,16 @@ module.exports = {
             max_tokens: max_tokens,
         });
 
+        const responseEmbed = new EmbedBuilder()
+            .setTitle(prompt)
+            .setDescription(response.data.choices[0].text)
+            .addFields({
+                name: 'Thanks for using PortableGPT!',
+                value: 'Consider donating [here](https://paypal.me/xMrVideo) in order to keep this bot running.'
+            })
+            .setColor(0x4287f5);
+
         // Respond on Discord with the API response
-        await interaction.editReply(response.data.choices[0].text);
+        await interaction.editReply({ embeds: [responseEmbed] });
     },
 };

@@ -1,0 +1,8 @@
+# File system
+.DS_Store
+
+# Node packages
+node_modules
+
+# Secrets
+config.json

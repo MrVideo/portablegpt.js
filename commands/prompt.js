@@ -24,16 +24,25 @@ module.exports = {
         const prompt = interaction.options.getString('prompt');
 
         // Add user prompt to OpenAI API request
-        const response = await openai.createCompletion({
-            model: "text-davinci-003",
-            prompt: prompt,
+        const response = await openai.createChatCompletion({
+            model: "gpt-3.5-turbo",
+            messages: [
+                {
+                    "role": "system",
+                    "content": "You are a helpful and knowledgeable bot that will answer the user's questions."
+                },
+                {
+                    "role": "user",
+                    "content": prompt
+                }
+            ],
             temperature: 0.5,
-            max_tokens: max_tokens,
+            max_tokens: max_tokens
         });
 
         const responseEmbed = new EmbedBuilder()
             .setTitle(prompt)
-            .setDescription(response.data.choices[0].text)
+            .setDescription(response.data.choices[0].message.content)
             .addFields({
                 name: 'Thanks for using PortableGPT!',
                 value: 'Consider donating [here](https://paypal.me/xMrVideo) in order to keep this bot running.'
